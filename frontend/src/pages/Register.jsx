@@ -23,7 +23,7 @@ export default function Register({ navigate }) {
     setIsLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/auth/register",
+        axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, data),
         form,
       );
       localStorage.setItem("userId", res.data.user._id);
