@@ -22,10 +22,12 @@ export default function Register({ navigate }) {
   const handleRegister = async () => {
     setIsLoading(true);
     try {
+      // PERBAIKAN DI SINI: Kode axios.post sudah bersih dan rapi
       const res = await axios.post(
-        axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, data),
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
         form,
       );
+
       localStorage.setItem("userId", res.data.user._id);
       window.location.reload(); // Otomatis masuk ke dashboard setelah register
     } catch (err) {
