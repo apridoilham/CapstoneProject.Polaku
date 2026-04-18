@@ -12,7 +12,7 @@ export default function Progress({ navigate }) {
 
   const fetchData = () => {
     axios
-      .get(`http://localhost:5001/api/recommendation/${userId}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/recommendation/${userId}`)
       .then((res) => {
         setData(res.data);
         setWeightInput(res.data.user.weight);
@@ -45,7 +45,7 @@ export default function Progress({ navigate }) {
 
     try {
       await axios.post(
-        `http://localhost:5001/api/recommendation/checkin/${userId}`,
+        `${import.meta.env.VITE_API_URL}/api/recommendation/checkin/${userId}`,
         {
           weight: parseFloat(weightInput),
           dateRecord: dateStr,
@@ -74,7 +74,6 @@ export default function Progress({ navigate }) {
         (1000 * 60 * 60 * 24 * 7),
     ) + 1;
 
-  // Cek apakah user sudah input di minggu yang berjalan ini
   const hasCheckedInThisWeek = list.some(
     (item) => item.week === week && item.status !== "Tidak Input",
   );
@@ -151,7 +150,6 @@ export default function Progress({ navigate }) {
                   .slice()
                   .reverse()
                   .map((item, i) => {
-                    // Fallback date jika user lama belum punya dateRecord di awal
                     let displayDate = item.dateRecord;
                     if (!displayDate && item.week === 1) {
                       displayDate = new Date(

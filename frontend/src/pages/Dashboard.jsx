@@ -9,13 +9,12 @@ export default function Dashboard({ navigate }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/recommendation/${userId}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/recommendation/${userId}`)
       .then((res) => {
         setData(res.data);
         setIsLoading(false);
       })
       .catch((err) => {
-        // FITUR BARU: Auto-logout jika user tidak ditemukan di database (karena DB di-reset)
         if (err.response?.status === 404) {
           localStorage.clear();
           window.location.reload();
@@ -33,7 +32,6 @@ export default function Dashboard({ navigate }) {
     );
   }
 
-  // Kalkulasi BMI
   const heightInMeter = data.user.height / 100;
   const bmi = (data.user.weight / (heightInMeter * heightInMeter)).toFixed(1);
   let bmiStatus = "Normal";
@@ -61,7 +59,6 @@ export default function Dashboard({ navigate }) {
     <div className="min-h-screen bg-[#0f172a] text-white">
       <Chatbot />
 
-      {/* HEADER OVERVIEW */}
       <div className="bg-slate-900/80 backdrop-blur-md p-6 sticky top-0 z-40 border-b border-slate-800">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
@@ -80,7 +77,6 @@ export default function Dashboard({ navigate }) {
       </div>
 
       <div className="max-w-6xl mx-auto p-6 space-y-8 mt-4">
-        {/* METRICS CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="card p-6 border-t-4 border-t-blue-500 relative overflow-hidden group">
             <div className="absolute -right-6 -top-6 text-7xl opacity-5 group-hover:scale-110 transition-transform">
@@ -138,7 +134,6 @@ export default function Dashboard({ navigate }) {
           </div>
         </div>
 
-        {/* TIPS SECTION */}
         <div className="card p-8 bg-blue-900/10 border border-blue-500/20">
           <h2 className="text-xl font-bold text-blue-400 mb-5 flex items-center gap-2">
             <svg

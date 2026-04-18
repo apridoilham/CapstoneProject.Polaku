@@ -8,7 +8,7 @@ export default function Profile({ navigate }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/recommendation/${userId}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/recommendation/${userId}`)
       .then((res) => {
         const u = res.data.user;
         setForm({
@@ -30,7 +30,6 @@ export default function Profile({ navigate }) {
   const handleSave = async () => {
     setLoading(true);
 
-    // PEMBERSIHAN DATA: Buang data sensitif/sistem agar tidak bentrok di backend
     const {
       password,
       _id,
@@ -43,9 +42,8 @@ export default function Profile({ navigate }) {
     } = form;
 
     try {
-      // Kirim payload secara langsung. Backend (authRoutes.js) yang akan melakukan .split(",")
       await axios.put(
-        `http://localhost:5001/api/auth/profile/${userId}`,
+        `${import.meta.env.VITE_API_URL}/api/auth/profile/${userId}`,
         cleanPayload,
       );
 

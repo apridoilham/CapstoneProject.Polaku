@@ -10,7 +10,7 @@ export default function Login({ navigate }) {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        "http://localhost:5001/api/auth/login",
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         { email, password },
       );
       localStorage.setItem("userId", data.user._id);
@@ -23,7 +23,6 @@ export default function Login({ navigate }) {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-slate-950 relative overflow-hidden">
-      {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
 
       <div className="w-full max-w-md bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-8 rounded-3xl shadow-2xl relative z-10">

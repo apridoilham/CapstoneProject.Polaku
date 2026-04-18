@@ -8,7 +8,7 @@ export default function History({ navigate }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/recommendation/${userId}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/recommendation/${userId}`)
       .then((res) => {
         setHistory(res.data.user.savedMeals || []);
         setLoading(false);
@@ -30,7 +30,7 @@ export default function History({ navigate }) {
     if (!window.confirm("Hapus menu ini?")) return;
     try {
       await axios.delete(
-        `http://localhost:5001/api/recommendation/delete-meal/${userId}/${date}`,
+        `${import.meta.env.VITE_API_URL}/api/recommendation/delete-meal/${userId}/${date}`,
       );
       setHistory(history.filter((h) => h.date !== date));
     } catch (err) {

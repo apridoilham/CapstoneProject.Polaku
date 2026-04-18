@@ -20,7 +20,7 @@ export default function Chatbot() {
     setLoad(true);
     try {
       const { data } = await axios.post(
-        "http://localhost:5001/api/recommendation/chat",
+        `${import.meta.env.VITE_API_URL}/api/recommendation/chat`,
         { message: inp, history: msgs.slice(-5) },
       );
       setMsgs((p) => [...p, { role: "assistant", content: data.reply }]);

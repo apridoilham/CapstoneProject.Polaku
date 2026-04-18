@@ -12,7 +12,7 @@ export default function Recommendations({ navigate }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/recommendation/${userId}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/recommendation/${userId}`)
       .then((res) => {
         setUserData(res.data.user);
       })
@@ -38,7 +38,7 @@ export default function Recommendations({ navigate }) {
     setLoading(true);
     try {
       const res = await axios.post(
-        `http://localhost:5001/api/recommendation/generate/${userId}`,
+        `${import.meta.env.VITE_API_URL}/api/recommendation/generate/${userId}`,
         { mealType: "all", currentMeals: [] },
       );
       setAiRecommendations(res.data.recommendations || []);
@@ -85,7 +85,7 @@ export default function Recommendations({ navigate }) {
 
     try {
       await axios.post(
-        `http://localhost:5001/api/recommendation/save-meal/${userId}`,
+        `${import.meta.env.VITE_API_URL}/api/recommendation/save-meal/${userId}`,
         {
           date: dateStr,
           totalCalories: totalCalories,
@@ -108,7 +108,6 @@ export default function Recommendations({ navigate }) {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-20">
-      {/* TOOLBAR */}
       <div className="flex flex-col md:flex-row justify-between items-center bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-lg mt-4">
         <div className="mb-4 md:mb-0">
           <h1 className="text-2xl font-bold text-white">Rancang Menu AI ⚗️</h1>
@@ -130,7 +129,6 @@ export default function Recommendations({ navigate }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* PANEL KIRI: POOL AI */}
         <div className="lg:col-span-4 space-y-4">
           <div className="card p-5 bg-slate-800/30 border-slate-700/50 sticky top-4">
             <h3 className="text-base font-bold text-emerald-400 mb-1 flex items-center gap-2">
@@ -211,7 +209,6 @@ export default function Recommendations({ navigate }) {
           </div>
         </div>
 
-        {/* PANEL KANAN: WORKSPACE */}
         <div className="lg:col-span-8 space-y-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center card p-5 bg-slate-800/30 border-slate-700/50">
             <div className="mb-4 sm:mb-0">
@@ -289,7 +286,6 @@ export default function Recommendations({ navigate }) {
                             kcal
                           </span>
                         </p>
-                        {/* KODE DI BAWAH INI YANG DIPERBAIKI (CSS CONFLICT) */}
                         <div className="flex flex-wrap justify-center sm:justify-start gap-2 text-xs font-bold text-slate-300">
                           <span className="bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-lg">
                             <span className="text-slate-500 mr-1">PROT</span>
