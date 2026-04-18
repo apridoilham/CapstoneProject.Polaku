@@ -9,7 +9,7 @@ export default function Register({ navigate }) {
     age: "",
     weight: "",
     height: "",
-    gender: "Laki-laki", // Default value
+    gender: "Laki-laki",
     occupation: "",
     purpose: "lose weight",
     activityLevel: "moderate",
@@ -19,19 +19,35 @@ export default function Register({ navigate }) {
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  // STATE BARU UNTUK ALERT YANG BAGUS
+  const [toast, setToast] = useState(null);
+
   const handleRegister = async () => {
     setIsLoading(true);
+    setToast(null); // Reset alert setiap kali tombol ditekan
+
     try {
-      // PERBAIKAN DI SINI: Kode axios.post sudah bersih dan rapi
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/register`,
         form,
       );
 
       localStorage.setItem("userId", res.data.user._id);
-      window.location.reload(); // Otomatis masuk ke dashboard setelah register
+      window.location.reload();
     } catch (err) {
-      alert("Error: " + (err.response?.data?.error || err.message));
+      let errorMsg = err.response?.data?.error || err.message;
+
+      // MENCEGAT ERROR MONGODB DAN MENGUBAHNYA JADI BAHASA MANUSIA
+      if (errorMsg.includes("E11000") || errorMsg.includes("duplicate key")) {
+        errorMsg =
+          "Ups! Email ini sudah terdaftar. Silakan gunakan email lain atau klik 'Masuk di sini'.";
+      }
+
+      // Tampilkan custom alert
+      setToast({ type: "error", message: errorMsg });
+
+      // Otomatis hilangkan alert setelah 5 detik
+      setTimeout(() => setToast(null), 5000);
       setIsLoading(false);
     }
   };
@@ -52,8 +68,8 @@ export default function Register({ navigate }) {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-950 py-12">
-      <div className="w-full max-w-3xl bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-8 md:p-10 rounded-3xl shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-950 py-12 relative">
+      <div className="w-full max-w-3xl bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-8 md:p-10 rounded-3xl shadow-2xl relative">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
             Buat Akun PolaKu 🚀
@@ -63,6 +79,20 @@ export default function Register({ navigate }) {
             akurat.
           </p>
         </div>
+
+        {/* CUSTOM ALERT COMPONENT DI SINI */}
+        {toast && (
+          <div className="mb-6 p-4 rounded-xl border flex items-start gap-3 animate-fade-in transition-all bg-red-500/10 border-red-500/30 text-red-400">
+            <span className="text-xl">⚠️</span>
+            <p className="text-sm font-bold flex-1 mt-0.5">{toast.message}</p>
+            <button
+              onClick={() => setToast(null)}
+              className="text-red-400 hover:text-white transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="col-span-1 md:col-span-2 border-b border-slate-800 pb-2">
@@ -84,7 +114,6 @@ export default function Register({ navigate }) {
             </h3>
           </div>
 
-          {/* FITUR BARU: DROPDOWN JENIS KELAMIN */}
           <div>
             <label className="text-xs text-slate-400 font-bold mb-2 block uppercase tracking-wider">
               Jenis Kelamin
