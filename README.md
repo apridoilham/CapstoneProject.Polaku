@@ -64,3 +64,19 @@ cd backend/ai
 pip install -r requirements.txt
 uvicorn api:app --reload --port 8000
 ```
+
+### 3. Jalankan Backend (Node.js)
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### 4. Jalankan Frontend (React)
+
+```bash
+cd backend
+npm install
+npm run dev
+```
