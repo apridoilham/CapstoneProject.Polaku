@@ -8,7 +8,19 @@ import recommendationRoutes from "./routes/recommendationRoutes.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Konfigurasi CORS Khusus untuk Vercel & Localhost
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3030",
+      "https://capstone-project-polaku.vercel.app", // URL Vercel kamu
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  }),
+);
+
 app.use(express.json());
 
 // Database Connection
